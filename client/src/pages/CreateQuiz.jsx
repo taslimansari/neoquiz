@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '../components/Button';
@@ -6,32 +6,36 @@ import RequiredError from '../components/RequiredError';
 import toast from 'react-hot-toast';
 import { createQuiz } from '../services/operations/QuizAPIs';
 import { useNavigate } from 'react-router-dom';
+import { setQuiz } from '../slices/QuizSlice';
 
 const CreateQuiz = () => {
 
-  // const [createdQuiz, setCreatedQuiz] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
   const submitHandler = async (data) => {
-    console.log(data);
-
+    setLoading(true);
     try {
       const response = await createQuiz(data, token);
       if (response) {
-        // setCreatedQuiz(response);
         setValue("title", "")
         setValue("description", "")
         setValue("timer", "")
 
-        console.log("response: ", response)
-        // dispatch(setQuiz(response))
+        dispatch(setQuiz(response))
         navigate("/dashboard/create-quiz/" + response._id)
+        toast.success("Quiz Created Successfully");
+      } else {
+        throw new Error("Quiz cannot be created at this moment")
       }
     } catch (e) {
       console.log(e);
       toast.error("Quiz cannot be created at this moment")
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -90,15 +94,8 @@ const CreateQuiz = () => {
           errors.timer && <RequiredError>{errors.timer.message}</RequiredError>
         }
         <span>
-          <Button type='submit'>Create</Button>
+          <Button disabled={loading} type='submit'>Create</Button>
         </span>
-        {/* {
-          createdQuiz && (
-            <div className='self-end'>
-              <Button>Add Quesitons</Button>
-            </div>
-          )
-        } */}
       </form>
 
     </div>

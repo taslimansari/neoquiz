@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   quiz: null,
+  edit: false,
 };
 
 const quizSlice = createSlice({
@@ -11,9 +12,12 @@ const quizSlice = createSlice({
     setQuiz(state, value) {
       state.quiz = value.payload;
     },
+    setEdit(state, value) {
+      state.edit = value.payload;
+    },
   },
 });
 
-export const { setQuiz } = quizSlice.actions;
+export const { setQuiz, setEdit } = quizSlice.actions;
 
 export default quizSlice.reducer;

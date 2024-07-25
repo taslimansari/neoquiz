@@ -41,7 +41,7 @@ exports.createQuestion = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Question created successfully",
-      question: requstion,
+      data: requstion,
     });
   } catch (e) {
     console.log("ERROR CREATING QUESTION: ", e);
@@ -136,6 +136,25 @@ exports.deleteQuestion = async (req, res) => {
     });
   } catch (e) {
     console.error("ERROR DELETING QUESTION:", e.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+};
+
+// ✅
+exports.getQuizQuestions = async (req, res) => {
+  console.log("here") 
+  try {
+    const quizId = req.params.id;
+    const questions = await Question.find({ quizId });
+    return res.status(200).json({
+      success: true,
+      data: questions,
+    });
+  } catch (e) {
+    console.log("ERROR GETTING QUIZ QUESTIONS: ", e);
     return res.status(500).json({
       success: false,
       error: "Internal server error",

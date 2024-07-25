@@ -16,12 +16,10 @@ export const createQuiz = async (data, token) => {
 
     console.log("CREATE_QUIZ_RESPONSE : ", response);
 
-    toast.success("Quiz Created Successfully");
     return response?.data?.data;
 
   } catch (e) {
     console.log("ERROR WHILE CREATING QUIZ : ", e);
-    toast.error("Quiz Creation failed");
   }
   return null;
 };

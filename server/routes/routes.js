@@ -17,6 +17,7 @@ const {
   createQuestion,
   updateQuestion,
   deleteQuestion,
+  getQuizQuestions,
 } = require("../controllers/questionController");
 
 const { login, register } = require("../controllers/userController");
@@ -31,6 +32,7 @@ router.put("/quizzes/:id", authMiddleware, adminMiddleware, updateQuiz);
 router.delete("/quizzes/:id", authMiddleware, adminMiddleware, deleteQuiz);
 
 // question routes
+router.get("/questions/:id", authMiddleware, getQuizQuestions);
 router.post("/questions", authMiddleware, adminMiddleware, createQuestion);
 router.put("/questions/:id", authMiddleware, adminMiddleware, updateQuestion);
 router.delete(

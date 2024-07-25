@@ -13,6 +13,7 @@ export const quizEndpoints = {
 
 export const questionEndpoints = {
   CREATE_QUESTION: `${BASE_URL}/questions`,
-  UPDATE_QUESTION: `${BASE_URL}/questions/:id`,
-  DELETE_QUESTION: `${BASE_URL}/questions/:id`,
+  UPDATE_QUESTION: `${BASE_URL}/questions`,
+  DELETE_QUESTION: `${BASE_URL}/questions`,
+  GET_QUIZ_QUESTIONS: `${BASE_URL}/questions`,
 };

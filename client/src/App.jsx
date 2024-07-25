@@ -6,6 +6,7 @@ import LoggedInRoutes from "./components/LoggedInRoutes"
 import Profile from "./pages/Profile"
 import CreateQuiz from "./pages/CreateQuiz"
 import DashboardLayout from "./components/DashboardLayout"
+import CreateQuestions from "./pages/CreateQuestions"
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/dashboard">
             <Route index element={<LoggedInRoutes><DashboardLayout><Profile /></DashboardLayout></LoggedInRoutes>} />
             <Route path="create-quiz" element={<LoggedInRoutes><DashboardLayout><CreateQuiz /></DashboardLayout ></LoggedInRoutes>} />
+            <Route path="create-quiz/:id" element={<LoggedInRoutes><DashboardLayout><CreateQuestions /></DashboardLayout ></LoggedInRoutes>} />
             {/* <Route path="quizes" element={<LoggedInRoutes><DashboardLayout><ListQuizes /></DashboardLayout></LoggedInRoutes>} />
             <Route path="results" element={<LoggedInRoutes><DashboardLayout><Results /></DashboardLayout></LoggedInRoutes>} /> */}
           </Route>
