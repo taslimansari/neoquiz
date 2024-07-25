@@ -55,8 +55,8 @@ exports.updateQuiz = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      error: "Quiz updated successfully",
-      quiz,
+      message: "Quiz updated successfully",
+      data: quiz,
     });
   } catch (e) {
     console.log("ERROR UPDATING QUIZ : ", e);
@@ -149,9 +149,7 @@ exports.attemptQuiz = async (req, res) => {
     // Fetch the quiz details
     const quiz = await Quiz.findById(quizId);
     if (!quiz) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Quiz not found" });
+      return res.status(404).json({ success: false, error: "Quiz not found" });
     }
 
     // Fetch all questions for the quiz
@@ -217,6 +215,44 @@ exports.getUserAttempts = async (req, res) => {
     });
   } catch (e) {
     console.error("ERROR FETCHING USER ATTEMPTS:", e.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+};
+
+// ✅
+exports.getAdminQuizes = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const quizzes = await Quiz.find({ createdBy: userId });
+
+    return res.status(200).json({
+      success: true,
+      data: quizzes,
+    });
+  } catch (e) {
+    console.error("ERROR FETCHING ADMIN QUIZZES:", e.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+};
+
+// ⚙️
+exports.getQuizAttempts = async (req, res) => {
+  try {
+    const quizId = req.params.id;
+    const attempts = await Attempt.find({ quizId }).populate("userId score", "name");
+    return res.status(200).json({
+      success: true,
+      data: attempts,
+    });
+  } catch (e) {
+    console.error("ERROR FETCHING QUIZ ATTEMPTS:", e.message);
     return res.status(500).json({
       success: false,
       error: "Internal server error",

@@ -7,8 +7,10 @@ export const authEndpoints = {
 
 export const quizEndpoints = {
   CREATE_QUIZ: `${BASE_URL}/quizzes`,
-  UPDATE_QUIZ: `${BASE_URL}/quizzes/:id`,
-  DELETE_QUIZ: `${BASE_URL}/quizzes/:id`,
+  UPDATE_QUIZ: `${BASE_URL}/quizzes`,
+  DELETE_QUIZ: `${BASE_URL}/quizzes`,
+  GET_ADMIN_QUIZES: `${BASE_URL}/admin-quizzes`,
+  GET_SCORES: `${BASE_URL}/attempts`
 };
 
 export const questionEndpoints = {

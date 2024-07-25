@@ -1,24 +1,40 @@
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '../components/Button';
 import RequiredError from '../components/RequiredError';
 import toast from 'react-hot-toast';
-import { createQuiz } from '../services/operations/QuizAPIs';
-import { useNavigate } from 'react-router-dom';
-import { setQuiz } from '../slices/QuizSlice';
+import { createQuiz, updateQuiz } from '../services/operations/QuizAPIs';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { setEdit, setQuiz } from '../slices/QuizSlice';
 
 const CreateQuiz = () => {
 
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
   const { token } = useSelector((state) => state.auth);
+  const { edit, quiz } = useSelector((state) => state.quiz);
+  const location = useLocation();
   const navigate = useNavigate()
   const dispatch = useDispatch();
+  const { id: quizId } = useParams()
 
   const submitHandler = async (data) => {
     setLoading(true);
     try {
+
+      if (edit) {
+        const response = await updateQuiz(data, token, quizId);
+        if (response) {
+          navigate("/dashboard/quizes")
+          setValue("title", "")
+          setValue("description", "")
+          setValue("timer", "")
+        }
+
+        return
+      }
+
       const response = await createQuiz(data, token);
       if (response) {
         setValue("title", "")
@@ -38,6 +54,21 @@ const CreateQuiz = () => {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (edit && quiz) {
+      setValue("title", quiz.title)
+      setValue("description", quiz.description)
+      setValue("timer", quiz.timer)
+    }
+
+    if(location.pathname === "/dashboard/create-quiz"){
+      dispatch(setEdit(false))
+      dispatch(setQuiz(null))
+      reset();
+    }
+
+  }, [edit, quiz, setValue, location.pathname])
 
   return (
     <div className='min-h-[70vh] flex justify-center flex-col items-center gap-10'>
@@ -94,7 +125,7 @@ const CreateQuiz = () => {
           errors.timer && <RequiredError>{errors.timer.message}</RequiredError>
         }
         <span>
-          <Button disabled={loading} type='submit'>Create</Button>
+          <Button disabled={loading} type='submit'>{edit ? "Update" : "Create"}</Button>
         </span>
       </form>
 

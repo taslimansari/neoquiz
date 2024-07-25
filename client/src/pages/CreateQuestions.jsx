@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 import { apiConnector } from '../services/apiConnector';
 import { questionEndpoints } from '../services/APIs';
@@ -8,6 +8,7 @@ import Button from '../components/Button';
 import CreateQuestionModal from '../components/core/createQuiz/CreateQuestionModal';
 import QuestionCard from "../components/core/createQuiz/QuestionCard"
 import { deleteQuestion } from '../services/operations/questionAPIs';
+import { setQuiz, setEdit } from '../slices/QuizSlice';
 
 const CreateQuestions = () => {
 
@@ -18,7 +19,14 @@ const CreateQuestions = () => {
     const [createQuestionModalData, setCreateQuestionModalData] = useState(null);
     const [laoding, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { id } = useParams();
+
+    const finishHandler = () => {
+        navigate("/dashboard/create-quiz")
+        dispatch(setQuiz(null))
+        dispatch(setEdit(false))
+    }
 
     const deleteQuestionHandler = async (question) => {
 
@@ -99,7 +107,7 @@ const CreateQuestions = () => {
                     !laoding && questions.length > 0 && (
                         questions.map((ques) => (
                             <QuestionCard
-                            deleteQuestionHandler={deleteQuestionHandler}
+                                deleteQuestionHandler={deleteQuestionHandler}
                                 key={ques?._id}
                                 question={ques}
                                 quiz={quiz}
@@ -109,6 +117,9 @@ const CreateQuestions = () => {
                         ))
                     )
                 }
+            </div>
+            <div className='self-end' onClick={finishHandler}>
+                <Button active>Finish</Button>
             </div>
             {
                 createQuestionModalData && (

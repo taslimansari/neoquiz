@@ -7,8 +7,14 @@ import Profile from "./pages/Profile"
 import CreateQuiz from "./pages/CreateQuiz"
 import DashboardLayout from "./components/DashboardLayout"
 import CreateQuestions from "./pages/CreateQuestions"
+import AdminQuizes from "./pages/AdminQuizes"
+import { useSelector } from "react-redux"
 
 function App() {
+
+  const { edit, quiz } = useSelector(state => state.quiz)
+  console.log("edit : ", edit);
+  console.log("quiz: ", quiz)
 
   return (
     <div className=" bg-slate-950 text-white">
@@ -21,8 +27,9 @@ function App() {
             <Route index element={<LoggedInRoutes><DashboardLayout><Profile /></DashboardLayout></LoggedInRoutes>} />
             <Route path="create-quiz" element={<LoggedInRoutes><DashboardLayout><CreateQuiz /></DashboardLayout ></LoggedInRoutes>} />
             <Route path="create-quiz/:id" element={<LoggedInRoutes><DashboardLayout><CreateQuestions /></DashboardLayout ></LoggedInRoutes>} />
-            {/* <Route path="quizes" element={<LoggedInRoutes><DashboardLayout><ListQuizes /></DashboardLayout></LoggedInRoutes>} />
-            <Route path="results" element={<LoggedInRoutes><DashboardLayout><Results /></DashboardLayout></LoggedInRoutes>} /> */}
+            <Route path="quizes" element={<LoggedInRoutes><DashboardLayout><AdminQuizes /></DashboardLayout></LoggedInRoutes>} />
+            <Route path="edit-quiz/:id" element={<LoggedInRoutes><DashboardLayout><CreateQuiz /></DashboardLayout></LoggedInRoutes>} />
+            {/* <Route path="results" element={<LoggedInRoutes><DashboardLayout><Results /></DashboardLayout></LoggedInRoutes>} /> */}
           </Route>
         </Routes>
       </div>

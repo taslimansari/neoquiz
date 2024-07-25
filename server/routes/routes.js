@@ -11,6 +11,8 @@ const {
   getQuizById,
   attemptQuiz,
   getUserAttempts,
+  getAdminQuizes,
+  getQuizAttempts,
 } = require("../controllers/quizController");
 
 const {
@@ -27,6 +29,8 @@ router.post("/login", login);
 router.post("/register", register);
 
 // Quiz routes
+router.get("/admin-quizzes", authMiddleware, adminMiddleware, getAdminQuizes);
+router.get("/attempts/:id", authMiddleware, adminMiddleware, getQuizAttempts);
 router.post("/quizzes", authMiddleware, adminMiddleware, createQuiz);
 router.put("/quizzes/:id", authMiddleware, adminMiddleware, updateQuiz);
 router.delete("/quizzes/:id", authMiddleware, adminMiddleware, deleteQuiz);
