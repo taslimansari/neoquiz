@@ -10,7 +10,10 @@ export const quizEndpoints = {
   UPDATE_QUIZ: `${BASE_URL}/quizzes`,
   DELETE_QUIZ: `${BASE_URL}/quizzes`,
   GET_ADMIN_QUIZES: `${BASE_URL}/admin-quizzes`,
-  GET_SCORES: `${BASE_URL}/attempts`
+  GET_SCORES: `${BASE_URL}/attempts`,
+  GET_ALL_QUIZES: `${BASE_URL}/quizzes`,
+  GET_QUIZ_DETAILS: `${BASE_URL}/quizzes`,
+  ATTEMMP_QUIZ: `${BASE_URL}/quizzes`
 };
 
 export const questionEndpoints = {

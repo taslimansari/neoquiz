@@ -1,22 +1,32 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import Button from '../components/Button'
+import { logout } from '../services/operations/AuthAPIs'
+import { useDispatch } from 'react-redux'
 
 const DashboardLayout = ({ children }) => {
+
+    const dispatch = useDispatch();
+
     return (
         <section className=''>
-            <div className='flex py-2  gap-5 border-y my-3 border-slate-700 text-lg'>
-                <Link to={"/dashboard"}>
-                    Profile
-                </Link>
-                <Link to={"/dashboard/create-quiz"}>
-                    Create
-                </Link>
-                <Link to={"/dashboard/quizes"}>
-                    Quizes
-                </Link>
-                <Link to={"/dashboard/results"}>
-                    Results
-                </Link>
+            <div className='flex py-3 px-3 justify-between items-center gap-y-5  my-3 text-lg bg-slate-900 rounded-lg border border-slate-600'>
+                <span className='space-x-5'>
+                    <NavLink to={"/dashboard"} className='hover:bg-slate-700 transition-all duration-300 px-3 py-1 rounded-full'>
+                        Profile
+                    </NavLink>
+                    <Link to={"/dashboard/create-quiz"} className='hover:bg-slate-700 transition-all duration-300 px-3 py-1 rounded-full'>
+                        Create
+                    </Link>
+                    <Link to={"/dashboard/quizes"} className='hover:bg-slate-700 transition-all duration-300 px-3 py-1 rounded-full'>
+                        Quizes
+                    </Link>
+                </span>
+                <span>
+                    <Button active={false} onClick={() => logout(dispatch)} to={"/dashboard/logout"}>
+                        Logout
+                    </Button>
+                </span>
             </div>
             {children}
         </section>

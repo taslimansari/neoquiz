@@ -20,8 +20,8 @@ const QuizCard = ({ quiz, handleDeleteQuiz }) => {
 
     return (
         <>
-            <div className='py-3 px-5 border border-slate-600 bg-slate-900 hover:border-slate-400 transition-all duration-300 cursor-pointer rounded-lg'>
-                <span onClick={() => setShowDetails(!showDetails)} className='border-b pb-3 mb-2 flex justify-between items-center border-slate-600'>
+            <div className='py-3 px-5 border border-slate-600 bg-slate-900 hover:border-slate-400 transition-all duration-300 rounded-lg'>
+                <span onClick={() => setShowDetails(!showDetails)} className='border-b cursor-pointer pb-3 mb-2 flex justify-between items-center border-slate-600'>
                     <h3 className='text-xl font-semibold '>title : {quiz.title}</h3>
                     <p className={`${!showDetails ? "rotate-180" : "rotate-0"} transition-all duration-300`}><IoIosArrowUp /></p>
                 </span>
@@ -30,9 +30,9 @@ const QuizCard = ({ quiz, handleDeleteQuiz }) => {
                         <p className='font-thin'>Description : {quiz.description}</p>
                         <p className='font-thin'>Time : {quiz.timer} minutes</p>
                     </span>
-                    <span className='flex gap-3 items-center'>
-                        <Button onClick={() => handleDeleteQuiz(quiz._id)} active={false} >Delete</Button>
-                        <Button onClick={handleEditQuiz} active >Edit</Button>
+                    <span className='flex gap-3 justify-end  items-center'>
+                        <Button onClick={() => handleDeleteQuiz(quiz._id)} className='w-max' active={false} >Delete</Button>
+                        <Button onClick={handleEditQuiz} className='w-max' active >Edit</Button>
                     </span>
                 </div>
                 {

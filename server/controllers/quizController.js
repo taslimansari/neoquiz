@@ -103,10 +103,10 @@ exports.deleteQuiz = async (req, res) => {
 // ✅
 exports.getAllQuizzes = async (req, res) => {
   try {
-    const quizzes = await Quiz.find();
+    const quizzes = await Quiz.find().populate("createdBy", "username email");
     return res.status(200).json({
       success: true,
-      quizzes,
+      data: quizzes,
     });
   } catch (e) {
     console.log("ERROR GETTING QUIZZES : ", e);
@@ -121,7 +121,10 @@ exports.getAllQuizzes = async (req, res) => {
 exports.getQuizById = async (req, res) => {
   try {
     const quizId = req.params.id;
-    const quiz = await Quiz.findById(quizId);
+    const quiz = await Quiz.findById(quizId).populate(
+      "createdBy",
+      "username email"
+    );
     if (!quiz) {
       return res
         .status(404)
@@ -129,7 +132,7 @@ exports.getQuizById = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      quiz,
+      data: quiz,
     });
   } catch (e) {
     console.log("ERROR GETTING QUIZ : ", e);
@@ -140,24 +143,22 @@ exports.getQuizById = async (req, res) => {
   }
 };
 
-// ⚙️
+// ✅
 exports.attemptQuiz = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming req.user is set by the auth middleware
+    const userId = req.user.id;
     const { quizId, answers } = req.body;
 
-    // Fetch the quiz details
     const quiz = await Quiz.findById(quizId);
     if (!quiz) {
       return res.status(404).json({ success: false, error: "Quiz not found" });
     }
 
-    // Fetch all questions for the quiz
     const questions = await Question.find({ quizId });
 
-    // Validate and calculate score
     let score = 0;
     const answersArray = [];
+
 
     for (const question of questions) {
       const userAnswer = answers.find(
@@ -166,7 +167,7 @@ exports.attemptQuiz = async (req, res) => {
       if (userAnswer) {
         const selectedOption = question.options.id(userAnswer.selectedOption);
         if (selectedOption && selectedOption.isCorrect) {
-          score += 1; // Increment score for correct answer
+          score += 1;
         }
         answersArray.push({
           questionId: question._id,
@@ -175,7 +176,6 @@ exports.attemptQuiz = async (req, res) => {
       }
     }
 
-    // Record the attempt
     const attempt = new Attempt({
       userId,
       quizId,
@@ -246,7 +246,10 @@ exports.getAdminQuizes = async (req, res) => {
 exports.getQuizAttempts = async (req, res) => {
   try {
     const quizId = req.params.id;
-    const attempts = await Attempt.find({ quizId }).populate("userId score", "name");
+    const attempts = await Attempt.find({ quizId }).populate(
+      "userId score",
+      "name"
+    );
     return res.status(200).json({
       success: true,
       data: attempts,

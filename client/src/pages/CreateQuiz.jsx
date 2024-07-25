@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { createQuiz, updateQuiz } from '../services/operations/QuizAPIs';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { setEdit, setQuiz } from '../slices/QuizSlice';
+import { IoMdArrowForward } from "react-icons/io";
 
 const CreateQuiz = () => {
 
@@ -26,12 +27,12 @@ const CreateQuiz = () => {
       if (edit) {
         const response = await updateQuiz(data, token, quizId);
         if (response) {
-          navigate("/dashboard/quizes")
           setValue("title", "")
           setValue("description", "")
           setValue("timer", "")
         }
 
+        navigate("/dashboard/create-quiz/" + response._id)
         return
       }
 
@@ -62,7 +63,7 @@ const CreateQuiz = () => {
       setValue("timer", quiz.timer)
     }
 
-    if(location.pathname === "/dashboard/create-quiz"){
+    if (location.pathname === "/dashboard/create-quiz" && edit) {
       dispatch(setEdit(false))
       dispatch(setQuiz(null))
       reset();
@@ -127,9 +128,20 @@ const CreateQuiz = () => {
         <span>
           <Button disabled={loading} type='submit'>{edit ? "Update" : "Create"}</Button>
         </span>
+        {
+          edit && (
+            <button
+              type='button'
+              className='flex items-center gap-3 justify-center'
+              onClick={() => navigate("/dashboard/create-quiz/" + quiz._id)}
+            >
+              skip < IoMdArrowForward />
+            </button>
+          )
+        }
       </form>
 
-    </div>
+    </div >
   )
 }
 

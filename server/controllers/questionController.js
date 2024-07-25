@@ -145,7 +145,6 @@ exports.deleteQuestion = async (req, res) => {
 
 // ✅
 exports.getQuizQuestions = async (req, res) => {
-  console.log("here") 
   try {
     const quizId = req.params.id;
     const questions = await Question.find({ quizId });

@@ -48,9 +48,9 @@ const CreateQuestionModal = ({ quiz, setQuestions, setCreateQuestionModalData })
   };
 
   return (
-    <div className='absolute flex justify-start p-10 gap-10 flex-col items-center bg-slate-800 shadow-lg shadow-blue-300 rounded-lg border border-slate-600 inset-0 h-max'>
+    <div className='absolute top-[50%] w-[480px] max-w-[480px] mx-auto translate-y-[-50%] flex justify-start p-5 gap-10 flex-col items-center bg-slate-800 shadow-lg shadow-blue-300 rounded-lg border border-slate-600 inset-0 h-max'>
 
-      <h3 className='text-2x  l'>Create a question</h3>
+      <h3 className='text-3xl'>Create a question</h3>
 
       <form onSubmit={handleSubmit(submitHandler)} className='w-full max-w-[480px] flex flex-col gap-5'>
 
@@ -93,7 +93,7 @@ const CreateQuestionModal = ({ quiz, setQuestions, setCreateQuestionModalData })
           </span>
         </span>
 
-        <span>
+        <span className='flex flex-col gap-1'>
           {
             options.map((option, index) => (
               <div key={index} className='flex gap-2 items-center'>

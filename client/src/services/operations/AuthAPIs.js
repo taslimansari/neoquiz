@@ -47,3 +47,18 @@ export const login = async (data, dispatch) => {
   }
   return false;
 };
+
+export const logout = async (dispatch) => {
+  try {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    toast.success("Logged Out Successfully");
+    return true;
+  } catch (e) {
+    console.log("ERROR WHILE LOGGING OUT : ", e);
+    toast.error("Logout failed");
+  }
+  return false;
+};  

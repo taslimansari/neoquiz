@@ -75,7 +75,7 @@ const CreateQuestions = () => {
     }, [quiz, edit, id]);
 
     return (
-        <div className='min-h-[70vh] relative flex justify-start flex-col items-center gap-10'>
+        <div className=' relative flex justify-start flex-col items-center gap-10'>
             <div>
                 <h3 className='text-3xl underline text-center '>Create Questions</h3>
             </div>
