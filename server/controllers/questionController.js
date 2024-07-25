@@ -8,14 +8,14 @@ exports.createQuestion = async (req, res) => {
     if (!questionText || !options) {
       return res.status(400).json({
         success: false,
-        message: "Please provide all the required fields",
+        error: "Please provide all the required fields",
       });
     }
 
     if (!Array.isArray(options) || options.length < 2) {
       return res.status(400).json({
         success: false,
-        message: "Options should be an array with at least two items.",
+        error: "Options should be an array with at least two items.",
       });
     }
 
@@ -26,7 +26,7 @@ exports.createQuestion = async (req, res) => {
       ) {
         return res.status(400).json({
           success: false,
-          message:
+          error:
             "Each option should have 'text' as string and 'isCorrect' as boolean.",
         });
       }
@@ -47,7 +47,7 @@ exports.createQuestion = async (req, res) => {
     console.log("ERROR CREATING QUESTION: ", e);
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      error: "Internal server error",
     });
   }
 };
@@ -62,7 +62,7 @@ exports.updateQuestion = async (req, res) => {
     if (!questionText || !options) {
       return res.status(400).json({
         success: false,
-        message: "Please provide question text and options.",
+        error: "Please provide question text and options.",
       });
     }
 
@@ -70,7 +70,7 @@ exports.updateQuestion = async (req, res) => {
     if (!Array.isArray(options) || options.length < 2) {
       return res.status(400).json({
         success: false,
-        message: "Options should be an array with at least two items.",
+        error: "Options should be an array with at least two items.",
       });
     }
 
@@ -81,7 +81,7 @@ exports.updateQuestion = async (req, res) => {
       ) {
         return res.status(400).json({
           success: false,
-          message:
+          error:
             "Each option should have 'text' as string and 'isCorrect' as boolean.",
         });
       }
@@ -97,7 +97,7 @@ exports.updateQuestion = async (req, res) => {
     if (!question) {
       return res.status(404).json({
         success: false,
-        message: "Question not found",
+        error: "Question not found",
       });
     }
 
@@ -110,7 +110,7 @@ exports.updateQuestion = async (req, res) => {
     console.error("ERROR UPDATING QUESTION:", e.message);
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      error: "Internal server error",
     });
   }
 };
@@ -126,7 +126,7 @@ exports.deleteQuestion = async (req, res) => {
     if (!question) {
       return res.status(404).json({
         success: false,
-        message: "Question not found",
+        error: "Question not found",
       });
     }
 
@@ -138,7 +138,7 @@ exports.deleteQuestion = async (req, res) => {
     console.error("ERROR DELETING QUESTION:", e.message);
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      error: "Internal server error",
     });
   }
 };

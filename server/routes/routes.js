@@ -12,11 +12,13 @@ const {
   attemptQuiz,
   getUserAttempts,
 } = require("../controllers/quizController");
+
 const {
   createQuestion,
   updateQuestion,
   deleteQuestion,
 } = require("../controllers/questionController");
+
 const { login, register } = require("../controllers/userController");
 
 // User Authentication

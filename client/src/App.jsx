@@ -1,34 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from "react-router-dom"
+import Home from "./pages/Home"
+import SignUp from "./pages/SignUp"
+import LogIn from "./pages/LogIn"
+import LoggedInRoutes from "./components/LoggedInRoutes"
+import Profile from "./pages/Profile"
+import CreateQuiz from "./pages/CreateQuiz"
+import DashboardLayout from "./components/DashboardLayout"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className=" bg-slate-950 text-white">
+      <div className="max-w-[1200px] px-3 mx-auto min-h-screen ">
+        <Routes>
+          <Route path="/" element={<LoggedInRoutes><Home /></LoggedInRoutes>} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/dashboard">
+            <Route index element={<LoggedInRoutes><DashboardLayout><Profile /></DashboardLayout></LoggedInRoutes>} />
+            <Route path="create-quiz" element={<LoggedInRoutes><DashboardLayout><CreateQuiz /></DashboardLayout ></LoggedInRoutes>} />
+            {/* <Route path="quizes" element={<LoggedInRoutes><DashboardLayout><ListQuizes /></DashboardLayout></LoggedInRoutes>} />
+            <Route path="results" element={<LoggedInRoutes><DashboardLayout><Results /></DashboardLayout></LoggedInRoutes>} /> */}
+          </Route>
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 

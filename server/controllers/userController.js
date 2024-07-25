@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
-
 // ✅
 exports.register = async (req, res) => {
   try {
@@ -46,7 +45,7 @@ exports.register = async (req, res) => {
       .status(200)
       .json({ success: true, message: "User created successfully" });
   } catch (error) {
-    console.log("ERROR WHILE REGISTERING THE NEW USER : ", e);
+    console.log("ERROR WHILE REGISTERING THE NEW USER : ", error);
     return res
       .status(500)
       .json({ success: false, error: "Internal server error" });
@@ -90,10 +89,20 @@ exports.login = async (req, res) => {
       httpOnly: true,
     };
 
-    return res
-      .cookie("token", token, options)
-      .status(200)
-      .json({ success: true, message: "User logged in successfully", token });
+    return res.cookie("token", token, options).status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      data: {
+        token,
+        user: {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+          role: user.role,
+          createdAt: user.createdAt,
+        },
+      },
+    });
   } catch (error) {
     console.log("ERROR WHILE LOGGIN IN THE USER : ", e);
     return res
