@@ -34,7 +34,7 @@ const LogIn = () => {
   return (
     <div className='min-h-screen flex items-center justify-center '>
       <section>
-        <h1 className='text-center pb-3 text-4xl font-mono underline'>Quizzy </h1>
+        <h1 className='text-center pb-5 text-4xl font-mono underline'>Quizzy </h1>
         <form
           onSubmit={handleSubmit(submitHandler)}
           className='flex flex-col gap-y-3 max-w-[480px] shadow-lg shadow-blue-300  border p-10 rounded-lg'
@@ -49,7 +49,7 @@ const LogIn = () => {
             <label htmlFor="email">Email</label>
             <input
               id='email'
-              placeholder='Enter your Email'
+              placeholder='Email'
               className='py-1 text-base  placeholder:text-black text-slate-950 rounded-lg px-3 outline-none bg-slate-300 xl:text-xl'
               type="email"
               {...register("email", { required: "Email is required" })}
@@ -64,7 +64,7 @@ const LogIn = () => {
             <span className='flex items-center w-full'>
               <input
                 id='password'
-                placeholder='Enter your password'
+                placeholder='Password'
                 className='py-1 text-base  placeholder:text-black text-slate-950 w-full rounded-lg px-3 outline-none bg-slate-300 xl:text-xl'
                 type={hidePassword ? "password" : "text"}
                 {...register("password", { required: "Password is required" })}
