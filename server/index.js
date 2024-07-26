@@ -13,19 +13,15 @@ const PORT = process.env.PORT || 4000;
 // connect to db
 database.connectToDB();
 
-console.log("cors origin : ", process.env.CORS_ORIGIN );
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "https://quizzy-an.netlify.app",
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
     maxAge: 14400,
   })
 );
-
-app.use("/api/v1/", routes);
 
 app.get("/", (req, res) => {
   res.json({
@@ -33,6 +29,8 @@ app.get("/", (req, res) => {
     message: "Your server is up and running...",
   });
 });
+
+app.use("/api/v1/", routes);
 
 // activate server
 app.listen(PORT, () => {
