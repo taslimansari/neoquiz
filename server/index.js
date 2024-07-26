@@ -13,6 +13,8 @@ const PORT = process.env.PORT || 4000;
 // connect to db
 database.connectToDB();
 
+console.log("cors origin : ", process.env.CORS_ORIGIN );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(
