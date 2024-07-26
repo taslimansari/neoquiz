@@ -41,11 +41,19 @@ const Score = ({ quiz }) => {
                             <p className='text-green-600'>Score</p>
                         </div>
                         {
-                            scores.map((score, index) => (
+                            [...scores].reverse().map((score, index) => (
                                 <div className='flex justify-between items-center py-3 border-t border-slate-600 px-5' key={index}>
-                                    <p className='text-sm md:text-lg'>{score?.userId?.username}</p>
-                                    <p className='text-xs md:text-sm text-slate-300'>{formatDistanceToNow(new Date(score.createdAt), { addSuffix: true })}</p>
-                                    <p><span className={`${score?.score / score.answers.length >= 0.4? "text-green-500" : "text-red-700"}`}>{score?.score}</span> / {score.answers.length}</p>
+                                    <span className='flex gap-1 items-center'>
+                                        <p className='text-sm md:text-lg'>{score?.userId?.username}</p>
+                                        <p className='text-xs md:text-sm text-slate-300'>
+                                            - {formatDistanceToNow(new Date(score.createdAt), { addSuffix: true })}
+                                        </p>
+                                    </span>
+                                    <p>
+                                        <span className={`${score?.score / score.answers.length >= 0.4 ? "text-green-500" : "text-red-700"}`}>
+                                            {score?.score}
+                                        </span> / {score.answers.length}
+                                    </p>
                                 </div>
                             ))
                         }
