@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CORS_ORIGIN || "https://quizzy-an.netlify.app",
     credentials: true,
     maxAge: 14400,
   })

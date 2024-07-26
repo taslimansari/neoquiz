@@ -18,12 +18,11 @@ const LogIn = () => {
   const dispatch = useDispatch();
 
   const submitHandler = async (data) => {
-    // console.log("data : ", data)
     setLoading(true);
     try {
       const response = await login(data, dispatch)
       if (response) {
-        navigate("/")
+        navigate("/dashboard")
       }
     } catch (e) {
       console.log("ERROR WHILE SINGING UP : ", e);
@@ -35,6 +34,7 @@ const LogIn = () => {
   return (
     <div className='min-h-screen flex items-center justify-center '>
       <section>
+        <h1 className='text-center pb-3 text-4xl font-mono underline'>Quizzy </h1>
         <form
           onSubmit={handleSubmit(submitHandler)}
           className='flex flex-col gap-y-3 max-w-[480px] shadow-lg shadow-blue-300  border p-10 rounded-lg'
@@ -74,7 +74,7 @@ const LogIn = () => {
                 onClick={() => setHidePassword(!hidePassword)}
               >
                 {
-                  !hidePassword ? <TbEyeClosed /> : <TbEyeCheck />
+                  hidePassword ? <TbEyeClosed /> : <TbEyeCheck />
                 }</span>
             </span>
             {
@@ -85,6 +85,8 @@ const LogIn = () => {
           <span className='mt-5'>
             <Button disabled={loading} varient={"primary"} type={"submit"}>Submit</Button>
           </span>
+
+          <p className='text-center mt-3'>Don't have an account? <span onClick={() => navigate("/signup")} className=' cursor-pointer text-green-500'>Sign Up</span></p>
 
         </form>
       </section >

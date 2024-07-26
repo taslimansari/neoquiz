@@ -41,6 +41,7 @@ const SignUp = () => {
   return (
     <div className='min-h-screen flex items-center justify-center'>
       <section>
+        <h1 className='text-center pb-3 text-4xl font-mono underline'>Quizzy </h1>
         <form
           onSubmit={handleSubmit(submitHandler)}
           className='flex flex-col gap-y-3 max-w-[480px] shadow-lg shadow-blue-300 border p-10 rounded-lg'
@@ -93,7 +94,7 @@ const SignUp = () => {
                 onClick={() => setHidePassword((prev) => ({ ...prev, password: !hidePassword.password }))}
               >
                 {
-                  !hidePassword.password ? <TbEyeClosed /> : <TbEyeCheck />
+                  hidePassword.password ? <TbEyeClosed /> : <TbEyeCheck />
                 }</span>
             </span>
             {
@@ -117,7 +118,7 @@ const SignUp = () => {
                 onClick={() => setHidePassword((prev) => ({ ...prev, confirmPassword: !hidePassword.confirmPassword }))}
               >
                 {
-                  !hidePassword.confirmPassword ? <TbEyeClosed /> : <TbEyeCheck />
+                  hidePassword.confirmPassword ? <TbEyeClosed /> : <TbEyeCheck />
                 }
               </span>
             </span>
@@ -126,7 +127,7 @@ const SignUp = () => {
             }
           </span>
 
-          <span className='flex border p-1 cursor-pointer w-max gap-3 rounded-full'>
+           <span className='flex border border-slate-600 p-1 cursor-pointer w-max gap-3 rounded-full'>
             <button
               type="button"
               className={`${role === "user" ? "bg-green-700" : "bg-transparent"} px-3 rounded-full`}
@@ -152,6 +153,8 @@ const SignUp = () => {
           <span className=''>
             <Button disabled={loading} varient={"primary"} type={"submit"}>Submit</Button>
           </span>
+
+          <p className='text-center mt-3'>Already have an account? <span onClick={() => navigate("/login")} className='text-green-500 cursor-pointer'>Log in</span></p>
 
         </form>
       </section >

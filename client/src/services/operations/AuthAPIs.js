@@ -19,7 +19,7 @@ export const signUp = async (data) => {
     return true;
   } catch (e) {
     console.log("ERROR WHILE SINGING UP : ", e);
-    toast.error("Sign Up failed");
+    toast.error(e?.response?.data?.error);
   }
   return false;
 };
@@ -43,18 +43,19 @@ export const login = async (data, dispatch) => {
     return true;
   } catch (e) {
     console.log("ERROR WHILE LOGGING IN : ", e);
-    toast.error("Login failed");
+    toast.error(e.response.data.error);
   }
   return false;
 };
 
-export const logout = async (dispatch) => {
+export const logout = async (dispatch, navigate) => {
   try {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     dispatch(setToken(null));
     dispatch(setUser(null));
     toast.success("Logged Out Successfully");
+    navigate("/login")
     return true;
   } catch (e) {
     console.log("ERROR WHILE LOGGING OUT : ", e);
