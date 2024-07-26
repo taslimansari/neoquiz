@@ -5,7 +5,6 @@ import Button from '../../Button';
 
 const AttemptCard = ({ item }) => {
 
-    console.log("item : ", item);
     const navigate = useNavigate();
 
     return (

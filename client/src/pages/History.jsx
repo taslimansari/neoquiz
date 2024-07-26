@@ -41,7 +41,7 @@ const History = () => {
     <section className='py-5 px-3 md:p-10 min-h-[calc(100vh-10rem)] bg-slate-900 border-slate-600 border rounded-lg flex flex-col gap-y-5 items-start justify-start'>
       {
         loading ? (
-          <h1 className='text-xl md:text-2xl'>Loading...</h1>
+          <div className='text-xl md:text-2xl min-h-[70vh] w-full flex items-center justify-center'>Loading...</div>
         ) : (
           <div className='w-full h-full flex flex-col gap-5'>
             <h1 className='text-2xl md:text-4xl text-white font-semibold'>Your Attempts</h1>

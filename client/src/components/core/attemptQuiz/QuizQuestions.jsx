@@ -95,7 +95,7 @@ const QuizQuestions = ({ quizDetails, quizQuestions }) => {
                             />
                         ))}
                     </div>
-                    <Button className='w-max self-end' onClick={submitQuiz}>Submit Quiz</Button>
+                    <Button className='w-max self-end' onClick={submitQuiz}>Submit</Button>
                 </div>
             )}
         </div>

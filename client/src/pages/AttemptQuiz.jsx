@@ -25,7 +25,7 @@ const AttemptQuiz = () => {
                 Authorization: `Bearer ${token}`
             })
 
-            console.log("QUIZ QUESTIONS RESPONSE : ", response)
+            // console.log("QUIZ QUESTIONS RESPONSE : ", response)
 
             setQuisQuestions(response?.data?.data);
         } catch (error) {
@@ -63,11 +63,11 @@ const AttemptQuiz = () => {
                 {
                     questionsLoading || detailsLoading ? <h1>Loading...</h1> :
                         <>
-                            <span className='flex gap-5 items-center justify-between font-thin mb-3'>
+                            <span className='flex flex-col md:flex-row gap-x-5 gap-y-1 items-center justify-between font-thin mb-3'>
                                 <h3 className='text-base md:text-2xl font-semibold line-clamp-2'>{quizDetails?.title}</h3>
                                 <p className='text-slate-300 w-fit text-nowrap'>Time : {quizDetails?.timer} minutes</p>
                             </span>
-                            <span className='flex justify-between items-start gap-5 font-thin'>
+                            <span className='flex flex-col md:flex-row justify-between items-center gap-x-5 gap-y-1 font-thin'>
                                 <p className='font-thin mt-1 line-clamp-2'>{quizDetails?.description} </p>
                                 <span className='flex gap-3 text-slate-300 w-fit text-nowrap'>
                                     <p>crated By - {quizDetails?.createdBy?.username}</p>

@@ -16,7 +16,7 @@ const Score = ({ quiz }) => {
                 const response = await apiConnector("GET", `${quizEndpoints.GET_SCORES}/${quiz._id}`, null, {
                     Authorization: `Bearer ${token}`
                 })
-                console.log("res : ", response)
+                // console.log("res : ", response)
                 setScores(response?.data?.data)
             } catch (error) {
                 console.log("error : ", error)
@@ -43,7 +43,7 @@ const Score = ({ quiz }) => {
                         {
                             [...scores].reverse().map((score, index) => (
                                 <div className='flex justify-between items-center py-3 border-t border-slate-600 px-5' key={index}>
-                                    <span className='flex gap-1 items-center'>
+                                    <span className='flex flex-col md:flex-row gap-1 items-center'>
                                         <p className='text-sm md:text-lg'>{score?.userId?.username}</p>
                                         <p className='text-xs md:text-sm text-slate-300'>
                                             - {formatDistanceToNow(new Date(score.createdAt), { addSuffix: true })}
