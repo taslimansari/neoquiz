@@ -45,6 +45,13 @@ const LogIn = () => {
             </h3>
           </div>
 
+          {
+            loading &&
+            <span className='text-center text-red-500 text-sm'>
+              When Loaded for the first time the server might take a minute or two to response please be patient!
+            </span>
+          }
+
           <span className='flex flex-col gap-1'>
             <label htmlFor="email">Email</label>
             <input

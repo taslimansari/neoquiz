@@ -50,6 +50,14 @@ const SignUp = () => {
               Create Your <HighLightText>Free </HighLightText>Account Now!!!
             </h3>
           </div>
+
+          {
+            loading &&
+            <span className='text-center text-red-500 text-sm'>
+              When Loaded for the first time the server might take a minute or two to response please be patient!
+            </span>
+          }
+
           <span className='flex flex-col gap-1'>
             <label htmlFor="username">Create a Username</label>
             <input
@@ -126,7 +134,7 @@ const SignUp = () => {
             }
           </span>
 
-           <span className='flex border border-slate-600 p-1 cursor-pointer w-max gap-3 rounded-full'>
+          <span className='flex border border-slate-600 p-1 cursor-pointer w-max gap-3 rounded-full'>
             <button
               type="button"
               className={`${role === "user" ? "bg-green-700" : "bg-transparent"} px-3 rounded-full`}
