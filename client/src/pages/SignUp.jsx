@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -21,6 +22,7 @@ const SignUp = () => {
 
   const submitHandler = async (data) => {
     setLoading(true);
+    const toastId = toast.loading("Loading...")
     try {
       const response = await signUp(data)
       if (response) {
@@ -30,6 +32,7 @@ const SignUp = () => {
       console.log("ERROR WHILE SINGING UP : ", e);
     } finally {
       setLoading(false)
+      toast.dismiss(toastId)
     }
   }
 
@@ -54,7 +57,7 @@ const SignUp = () => {
           {
             loading &&
             <span className='text-center text-red-500 text-sm'>
-              When Loaded for the first time the server might take a minute or two to response please be patient!
+              When loaded for the first time, the server might take a minute or two to respond. Please be patient!
             </span>
           }
 

@@ -7,6 +7,7 @@ import RequiredError from '../components/RequiredError'
 import { login } from '../services/operations/AuthAPIs'
 import HighLightText from '../components/HighLightText'
 import { TbEyeClosed, TbEyeCheck } from "react-icons/tb";
+import toast from 'react-hot-toast'
 
 
 const LogIn = () => {
@@ -19,6 +20,7 @@ const LogIn = () => {
 
   const submitHandler = async (data) => {
     setLoading(true);
+    const toastId = toast.loading("Loading...")
     try {
       const response = await login(data, dispatch)
       if (response) {
@@ -28,6 +30,7 @@ const LogIn = () => {
       console.log("ERROR WHILE SINGING UP : ", e);
     } finally {
       setLoading(false)
+      toast.dismiss(toastId)
     }
   }
 
@@ -48,7 +51,7 @@ const LogIn = () => {
           {
             loading &&
             <span className='text-center text-red-500 text-sm'>
-              When Loaded for the first time the server might take a minute or two to response please be patient!
+              When loaded for the first time, the server might take a minute or two to respond. Please be patient!
             </span>
           }
 
