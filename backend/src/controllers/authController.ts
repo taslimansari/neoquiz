@@ -3,14 +3,14 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User';
 import generateToken from '../utils/generateToken';
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ username, password: hashedPassword });
     await user.save();
 
-    const token = generateToken(user._id.toString());
+    const token: string = generateToken(user._id.toString());
     res.status(201).json({ message: 'User created successfully', token });
   } catch (error) {
     const err = error as Error;
@@ -18,15 +18,16 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: 'Invalid credentials' });
+      return;
     }
 
-    const token = generateToken(user._id.toString());
+    const token: string = generateToken(user._id.toString());
     res.json({ token });
   } catch (error) {
     const err = error as Error;
