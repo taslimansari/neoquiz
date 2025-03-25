@@ -1,49 +1,36 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   Button,
-  TextField,
-  MenuItem,
-  Stack,
+  Stepper,
+  Step,
+  StepLabel,
   IconButton,
+  Stack,
   Typography,
-  Grid,
-  Switch,
-  FormControlLabel,
+  Box,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { useForm, Controller } from "react-hook-form";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs, { Dayjs } from "dayjs";
-import { X } from "@phosphor-icons/react";
+import { useForm } from "react-hook-form";
+import { Copy, X } from "@phosphor-icons/react";
+import Step1 from "./Step1";
+import Step2 from "./Step2";
+import Step3 from "./Step3";
+import { QuizFormData, Question } from "./types";
+
+const steps = ["Quiz Details", "Select Questions", "Review & Submit"];
 
 interface NewQuizDialogProps {
   open: boolean;
   handleClose: () => void;
 }
 
-interface QuizFormData {
-  title: string;
-  duration: number;
-  numQuestions: number;
-  scorePerQuestion: number;
-  description: string;
-  schedule: Dayjs | null;
-  subject: string;
-  module: string;
-  generateWithAI: boolean;
-  publish: boolean;
-}
-
-const subjectList = ["Math", "Science", "History", "Geography", "English", "Computer Science"];
-const moduleList = Array.from({ length: 15 }, (_, i) => `Module ${i + 1}`);
-
 const NewQuizDialog: React.FC<NewQuizDialogProps> = ({ open, handleClose }) => {
-  const { control, handleSubmit, reset, setValue } = useForm<QuizFormData>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<QuizFormData>({
     defaultValues: {
       title: "",
       duration: 30,
@@ -55,202 +42,138 @@ const NewQuizDialog: React.FC<NewQuizDialogProps> = ({ open, handleClose }) => {
       module: "",
       generateWithAI: false,
       publish: false,
+      code: "",
+      questions: []
     },
   });
 
-  const onSubmit = (data: QuizFormData) => {
-    console.log("Quiz Data:", data);
+
+  const [activeStep, setActiveStep] = useState(0);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const quizData = watch(); // Watch for form changes
+
+  // Update quiz data when questions are selected
+  const handleQuestionSelection = (selectedQuestions: Question[]) => {
+    setValue("questions", selectedQuestions); // Update form state
+  };
+
+  const handleNext = handleSubmit(() => {
+    if (activeStep === 0 && !quizData.title) return alert("Please enter quiz details!");
+    setActiveStep((prev) => prev + 1);
+  });
+
+  const handleBack = () => setActiveStep((prev) => prev - 1);
+  const handleReset = () => reset();
+  const handleSubmitQuiz = handleSubmit(() => {
+    const newCode = generateQuizCode();
+    setValue("code", newCode);
+    setSnackbarOpen(true);
+  });
+
+  const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") return; // Prevent closing when clicking outside
+    setSnackbarOpen(false);
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(quizData.code);
+    setSnackbarOpen(false);
+    reset(); // Resets the form to default values
+    setActiveStep(0); // Resets the stepper to the first step
     handleClose();
-    reset();
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-      {/* Dialog Header with Close Button */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 3, py: 2 }}>
-        <Typography variant="h6" fontWeight={600}>
-          Create New Quiz
-        </Typography>
-        <IconButton onClick={handleClose}>
-          <X size={20} weight="bold" />
-        </IconButton>
-      </Stack>
+    <>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 3, py: 2 }}>
+          <Typography variant="h6" fontWeight={600}>
+            Create New Quiz
+          </Typography>
+          <IconButton onClick={handleClose}>
+            <X size={20} weight="bold" />
+          </IconButton>
+        </Stack>
 
-      {/* Dialog Content */}
-      <DialogContent dividers>
-        <Grid container spacing={2}>
-          {/* Title */}
-          <Grid item xs={12}>
-            <Controller
-              name="title"
-              control={control}
-              rules={{ maxLength: 255 }}
-              render={({ field }) => (
-                <TextField {...field} label="Quiz Title" variant="outlined" fullWidth inputProps={{ maxLength: 255 }} />
-              )}
-            />
-          </Grid>
+        <DialogContent dividers>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (<Step key={label}><StepLabel>{label}</StepLabel></Step>))}
+          </Stepper>
+          <Box sx={{ p: 4 }}>
+            {activeStep === 0 && <Step1 control={control} setValue={setValue} />}
+            {activeStep === 1 && <Step2 quizData={quizData} onSelectionChange={handleQuestionSelection} />}
+            {activeStep === 2 && <Step3 quizData={quizData} />}
+          </Box>
 
-          {/* Duration */}
-          <Grid item xs={6}>
-            <Controller
-              name="duration"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} label="Duration (minutes)" type="number" variant="outlined" fullWidth />
-              )}
-            />
-          </Grid>
+        </DialogContent>
 
-          {/* No. of Questions */}
-          <Grid item xs={6}>
-            <Controller
-              name="numQuestions"
-              control={control}
-              render={({ field }) => (
-                <TextField select {...field} label="No. of Questions" variant="outlined" fullWidth>
-                  {[5, 10, 15, 20].map((num) => (
-                    <MenuItem key={num} value={num}>
-                      {num}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
+        <DialogActions sx={{ px: 3, py: 2 }}>
+          {activeStep === 0 && <Button onClick={handleReset} color="secondary">Reset</Button>}
+          {activeStep > 0 && <Button onClick={handleBack} color="secondary">Back</Button>}
+          {activeStep < 2 ? (
+            <Button onClick={handleNext} variant="contained" color="primary">Next</Button>
+          ) : (
+            <Button onClick={handleSubmitQuiz} variant="contained" color="success">Submit</Button>
+          )}
+        </DialogActions>
 
-          {/* Score per Question */}
-          <Grid item xs={6}>
-            <Controller
-              name="scorePerQuestion"
-              control={control}
-              render={({ field }) => (
-                <TextField select {...field} label="Score per Question" variant="outlined" fullWidth>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
-                    <MenuItem key={num} value={num}>
-                      {num}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
 
-          {/* Subject Selection */}
-          <Grid item xs={6}>
-            <Controller
-              name="subject"
-              control={control}
-              render={({ field }) => (
-                <TextField select {...field} label="Subject" variant="outlined" fullWidth>
-                  {subjectList.map((subject) => (
-                    <MenuItem key={subject} value={subject}>
-                      {subject}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
+      </Dialog>
 
-          {/* Module Selection */}
-          <Grid item xs={6}>
-            <Controller
-              name="module"
-              control={control}
-              render={({ field }) => (
-                <TextField select {...field} label="Module" variant="outlined" fullWidth>
-                  {moduleList.map((mod) => (
-                    <MenuItem key={mod} value={mod}>
-                      {mod}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
+      {/* Snackbar for showing quiz code */}
+      <Snackbar
+      open={snackbarOpen}
+      // autoHideDuration={6000}
+      onClose={() => setSnackbarOpen(false)}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    >
+      <Alert
+        severity="success"
+        variant="outlined"
+        sx={{
+          width: "auto",
+          backgroundColor: "white",
+          border: "1px solid #d8d8d8",
+          boxShadow: 3,
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          p: 2,
+        }}
+        action={
+          <IconButton onClick={() => setSnackbarOpen(false)} size="small">
+            <X size={16} />
+          </IconButton>
+        }
+      >
+        <Stack direction="column" spacing={1}>
+          <Typography fontWeight={600} color="success.main">
+            Quiz Created Successfully!
+          </Typography>
 
-           {/* Schedule Date-Time Picker */}
-           <Grid item xs={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Controller
-                name="schedule"
-                control={control}
-                render={({ field }) => (
-                  <DateTimePicker
-                    {...field}
-                    label="Schedule"
-                    value={field.value}
-                    onChange={(date) => setValue("schedule", date)}
-                    renderInput={(params) => <TextField {...params} fullWidth />}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          </Grid>
+          <Box display="flex" alignItems="center" justifyContent="space-around" border="1px solid #d8d8d8" borderRadius={1} p={1}>
+            <Typography fontWeight={600} color="primary">
+              CODE:
+            </Typography>
+            <Typography fontWeight={600} sx={{ ml: 1 }}>
+              {quizData.code}
+            </Typography>
+            <IconButton onClick={handleCopyCode} size="small">
+              <Copy size={16} />
+            </IconButton>
+          </Box>
 
-          {/* Description */}
-          <Grid item xs={12}>
-            <Controller
-              name="description"
-              control={control}
-              rules={{ maxLength: 1023 }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Description"
-                  variant="outlined"
-                  fullWidth
-                  multiline
-                  rows={3}
-                  inputProps={{ maxLength: 1023 }}
-                />
-              )}
-            />
-          </Grid>
-
-         
-
-          {/* Toggles */}
-          <Grid item xs={6}>
-            <FormControlLabel
-              control={
-                <Controller
-                  name="generateWithAI"
-                  control={control}
-                  render={({ field }) => <Switch {...field} checked={field.value} />}
-                />
-              }
-              label="Generate with AI"
-            />
-          </Grid>
-
-          <Grid item xs={6}>
-            <FormControlLabel
-              control={
-                <Controller
-                  name="publish"
-                  control={control}
-                  render={({ field }) => <Switch {...field} checked={field.value} />}
-                />
-              }
-              label="Publish"
-            />
-          </Grid>
-        </Grid>
-      </DialogContent>
-
-      {/* Dialog Actions */}
-      <DialogActions sx={{ px: 3, py: 2 }}>
-        <Button onClick={handleClose} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit(onSubmit)} variant="contained" color="primary">
-          Create Quiz
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <Button variant="contained" fullWidth onClick={() => setSnackbarOpen(false)} color="primary" size="small">
+            Close
+          </Button>
+        </Stack>
+      </Alert>
+    </Snackbar>
+    </>
   );
 };
+
+
+const generateQuizCode = () => Math.random().toString(36).substring(2, 8).toUpperCase();
 
 export default NewQuizDialog;
