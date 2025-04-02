@@ -4,7 +4,7 @@ import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Controller } from "react-hook-form";
 
-const subjectList = ["Math", "Science", "History", "Geography", "English", "Computer Science"];
+const subjectList = ["Cryptography and System Security", "Mobile Computing", "System Programming and Compiler Construction", "Artificial Intelligence", "Quantitative Analysis"];
 const moduleList = Array.from({ length: 15 }, (_, i) => `Module ${i + 1}`);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
