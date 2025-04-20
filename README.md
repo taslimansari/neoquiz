@@ -1,4 +1,4 @@
-NeoQuiz
+#NeoQuiz
 
 A simple quiz application with user authentication using the MERN stack (MongoDB, Express.js, React.js, and Node.js). It incorporates full CRUD operations with token-based authentication (JWT).
 
@@ -30,45 +30,6 @@ A simple quiz application with user authentication using the MERN stack (MongoDB
 ### Prerequisites
 - Node.js
 - MongoDB
-
-### Backend Setup
-1. Clone the repository:
-   ```sh
-     git clone https://github.com/yourusername/quiz-web-app.git
-     cd quiz-web-app
-   ```
-   
-2. Install backend dependencies:
-   ```sh
-    cd backend
-    npm install
-   ```
-   
-3. Set up environment variables:
-    Create a .env file in the backend directory with the following content:
-   ```sh
-    MONGO_URI=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret
-   ```
-
-4. Start the backend server:
-   ```sh
-    npm run dev
-   ```
-
-###  Frontend Setup
-
-1. Install frontend dependencies:
-``` sh
-    cd ../frontend
-    npm install
-```
-
-2. Start the frontend server:
-``` sh
-    npm run dev
-```
-The application should now be running, with the frontend accessible at http://localhost:5173 and the backend at http://localhost:3000.
 
 ### API Endpoints
 #### Auth
