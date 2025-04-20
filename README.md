@@ -1,4 +1,4 @@
-# Quizzy (Quiz Web Application)
+NeoQuiz
 
 A simple quiz application with user authentication using the MERN stack (MongoDB, Express.js, React.js, and Node.js). It incorporates full CRUD operations with token-based authentication (JWT).
 
